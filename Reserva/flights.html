@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AENSA Daily Flights</title>
+
+  <link href="./stylesheets/reset.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <!--<link href="./stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />-->
+  <link href="./stylesheets/flight.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="./stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+  <!--[if IE]>
+      <link href="./stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <!--<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>-->
+  <script src="javascripts/jq161.js" type="text/javascript"></script>
+  <script src="javascripts/ui187.js" type="text/javascript"></script>
+  <script src="javascripts/modernizr.1.7.min.js" type="text/javascript"></script>
+  <script src="javascripts/h5utils.js" type="text/javascript"></script>
+  <script src="javascripts/iedit.js" type="text/javascript"></script>
+  <script src="javascripts/pubsub.js" type="text/javascript"></script>
+  <script src="javascripts/base.js" type="text/javascript"></script>
+
+  <script>
+	$(document).ready(function () {
+		//console messages are fun!
+		console.log('⚝  AENSA Flight System.  ⚡KUZYA`11');
+		console.log('✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈');
+		//flag an error
+		//console.error('┫This is an error');
+		//flag a warning
+		//console.warn('┫This a warning');
+		//flag info
+		//console.info('┃This is info');
+	
+
+	});
+
+//AddNote("3C");
+//AddNote("3E");
+//AddNote("3G");
+
+function AddNote(name) {
+	var audio = document.createElement("audio");
+	audio.src = "piano/" + name + ".mp3";
+	audio.autoplay = true;
+}
+</script>
+
+<!-- LOADING SCRIPT -->
+<script>
+$(window).load(function(){
+  $("#loading").fadeOut(function(){
+    $(this).remove();
+    $('body').css('overflow', 'auto');
+  });
+});
+</script>
+
+<style type = "text/css">
+  body{overflow: hidden;}
+  #loaderContainer {position: absolute; top:50%; left:50%;}
+  #loaderContent {width: 48px; text-align: center; height: 48px; margin: -50px auto 0 auto;}
+  #loading {background-color: #fff; overflow:hidden; width:100%; height:100%; position: absolute; top: 0; left: 0; z-index: 9999;}
+</style> 
+<!-- LOADING SCRIPT END -->
+
+</head>
+<body id="page">
+
+  <div id="loading"> 
+  <script type = "text/javascript"> 
+    document.write("<div id='loaderContainer'><p id='loaderContent'>" +
+                   "<img id='loadinggraphic' src='images/loader.gif' /> " +
+                   "</p></div>");
+  </script> 
+  </div> 
+
+  <!-- Main Content -->
+  <section id="content" class="clearfix">
+    <article id="sampleView" class="layoutView">
+      <!--Sample Content-->
+      <ul id="show-items" class="clearfix"></ul> 
+    </article>
+  </section>
+
+  <!-- Footer -->
+  <footer id="layout_footer" class="clearfix">
+    <form id="todo-form">
+      <table>
+        <tr>
+          <td class="al"><button id="clear-all" class="button button-red" type="reset">Clear All</button></td>
+          <td class="ac"><input id="todo" type="text"/></td>
+          <td class="ar"><button id="submit" class="button button-green" type="submit">Add</button></td>
+        </tr>
+        <tr>
+          <td colspan="3" class="ac"><label>ex: 01/01/11 TI-BAZ 06:00-12:00 3PAX MRPV-MRTR-MRPV  LEIVA/PISARO - FULL<label></td>
+        </tr>
+      </table>
+    </form>
+  </footer>
+
+	<!--<script src="javascripts/h5scripts.js" type="text/javascript"></script>-->
+
+</body>
+</html>
+

@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AENSA (0)Reservations, (9)Notifications</title>
+
+  <link href="./stylesheets/reset.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="./stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="./stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+  <!--[if IE]>
+      <link href="./stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+  <!--<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>-->
+  <script src="javascripts/jq161.js" type="text/javascript"></script>
+  <script src="javascripts/modernizr.1.7.min.js" type="text/javascript"></script>
+  <script src="javascripts/h5utils.js" type="text/javascript"></script>
+  <script src="javascripts/date.js" type="text/javascript"></script>
+  <script src="javascripts/custom.js" type="text/javascript"></script>
+
+  <script>
+	$(document).ready(function () {
+		//console messages are fun!
+		console.log('⚝  AENSA Reservation System.  ⚡KUZYA`11');
+		console.log('✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈✈');
+		//flag an error
+		//console.error('┫This is an error');
+		//flag a warning
+		//console.warn('┫This a warning');
+		//flag info
+		//console.info('┃This is info');
+	
+		// load datepicker for Make Reservation View
+		$('input#ipt_datepicker').datepick();
+
+	});
+</script>
+
+<!-- LOADING SCRIPT -->
+<script>
+$(window).load(function(){
+    $("#loading").fadeOut(function(){
+        $(this).remove();
+        $('body').css('overflow', 'auto');
+    });
+});
+</script>
+
+<style type = "text/css">
+    body{overflow: hidden;}
+    #loaderContainer {position: absolute; top:50%; left:50%;}
+    #loaderContent {width: 48px; text-align: center; height: 48px; margin: -50px auto 0 auto;}
+    #loading {background-color: #fff; overflow:hidden; width:100%; height:100%; position: absolute; top: 0; left: 0; z-index: 9999;}
+</style> 
+<!-- LOADING SCRIPT END -->
+
+</head>
+<body>
+
+    <div id="loading"> 
+        <script type = "text/javascript"> 
+            document.write("<div id='loaderContainer'><p id='loaderContent'>" +
+                           "<img id='loadinggraphic' src='images/loader.gif' /> " +
+                           "</p></div>");
+        </script> 
+    </div> 
+
+	<header id="layout_header" class="clearfix" style="display:none;">
+		<h1 id="logo">TimeSlot <span>by AENSA</span></h1>
+    <nav class="left">
+      Nav left
+    </nav>
+    <nav id="layout_header_nav_right" class="right">
+		Nav right
+    </nav>
+	</header>
+  <div id="page">
+    <div id="content" class="clearfix">
+      <!-- Main Content -->
+      <section id="main_view" class="clearfix">
+      	<header id="main_view_header">
+      		<div id="main_view_header_row1" class="clearfix">
+				    <nav class="left">
+							<h3>
+								<span id="main_view_header_row1_title"><label id="viewTitle">Make Reservation</label></span>
+								<span id="main_view_header_row1_span"><label id="viewSubTitle">viewing JUNE</label></span>
+							</h3>
+				    </nav>
+				    <nav class="right">
+				      <!--main_view_header_row1 nav right-->
+						<input type="text" class="date" id="ipt_datepicker" name="date" placeholder="select date"/>
+				    </nav>
+      		</div>
+      		<div id="main_view_header_row2" class="clearfix">
+				    <nav class="left">
+					  <!-- main_view_header_row2 nav left -->
+					  <fieldset id="calViewer" class="pill-group">
+						  <button class="pill-left active" id="viewbyWeek">Week</button>
+						  <button class="pill-right" id="viewbyMonth">Month</button>
+					  </fieldset>
+					  <fieldset id="noticeViewer" class="pill-group">
+						  <button class="pill-left active" id="viewbyAll">All</button>
+						  <button class="pill-center" id="viewbySuccess">Success</button>
+						  <button class="pill-center" id="viewbyNotices">Info</button>
+						  <button class="pill-center" id="viewbyWarnings">Warning</button>
+						  <button class="pill-right" id="viewbyErrors">Error</button>
+					  </fieldset>
+					  <fieldset id="reservationsViewer" class="pill-group">
+						  <button class="pill-left active" id="viewbyAll">All</button>
+						  <button class="pill-center" id="viewbyConfirmed">Confirmed</button>
+						  <button class="pill-center" id="viewbyPending">Pending</button>
+						  <button class="pill-right" id="viewbyCanceled">Canceled</button>
+					  </fieldset>
+					  <fieldset id="calendarViewer" class="">
+						  <label>for </label>
+						  <label for="aoh1" class="ckbWrapped">
+							<input type="radio" name="airOrHeli" id="aoh1" value="Airplane" />
+							<span>Airplane</span>
+						  </label>
+						  <label for="aoh2" class="ckbWrapped">
+							<input type="radio" name="airOrHeli" id="aoh2" value="Helicopter" checked />
+							<span>Helicopter</span>
+						  </label>
+					  </fieldset>
+				    </nav>
+				    <nav class="right">
+				      <!-- main_view_header_row2 nav right -->
+						  <fieldset id="airNavMenu" class="icon ico-airplane" hidden>
+							  <label for="wa1" class="ckbWrapped"><input type="checkbox" id="wa1" /><span>TI-AFK</span></label>
+							  <label for="wa2" class="ckbWrapped"><input type="checkbox" id="wa2" /><span>TI-GER</span></label>
+							  <label for="wa3" class="ckbWrapped"><input type="checkbox" id="wa3" /><span>TI-ARM</span></label>
+							  <label for="wa4" class="ckbWrapped"><input type="checkbox" id="wa4" /><span>TI-KIO</span></label>
+							  <label for="wa5" class="ckbWrapped"><input type="checkbox" id="wa5" /><span>TI-WAN</span></label>
+						  </fieldset>
+
+						  <fieldset id="heliNavMenu" class="icon ico-helicopter" hidden>
+							  <label for="wh1" class="ckbWrapped"><input type="radio" name="wHeli" id="wh1" value="R22" /><span>R22</span></label>
+							  <label for="wh2" class="ckbWrapped"><input type="radio" name="wHeli" id="wh2" value="R44" /><span>R44</span></label>
+							  <label for="wh3" class="ckbWrapped"><input type="radio" name="wHeli" id="wh3" value="R66" /><span>R66</span></label>
+							  <label for="wh4" class="ckbWrapped"><input type="radio" name="wHeli" id="wh4" value="B3" /><span>B3</span></label>
+						  </fieldset>
+
+						  <!-- DRAG n DROP AIRCRAFT RESERVATION MENU -->
+						  <fieldset id="airNavMenuDrag" class="icon ico-airplane" hidden>
+							  <label id="dnd_afk">TI-AFK</label>
+							  <label id="dnd_ger">TI-GER</label>
+							  <label id="dnd_arm">TI-ARM</label>
+							  <label id="dnd_kio">TI-KIO</label>
+							  <label id="dnd_wan">TI-WAN</label>
+						  </fieldset>
+						  <fieldset id="heliNavMenuDrag" class="icon ico-helicopter" hidden>
+							  <label id="dnd_r22">R22</label>
+							  <label id="dnd_r44">R44</label>
+							  <label id="dnd_r66">R66</label>
+							  <label id="dnd_b3">B3</label>
+						  </fieldset>
+						  <!-- END DRAG n DROP AIRCRAFT RESERVATION MENU -->
+						
+				    </nav>
+      		</div>
+      	</header>
+
+        <article id="sampleView" class="layoutView">
+      		<!--Sample Content-->
+				I am a Sample, use me!
+        </article>
+
+      	<article id="weekView" class="layoutView">
+      		<!--Week Content for Helicopters-->
+		      <ol id="cal-helicopters" class="calendar week clearfix" start="25"> 
+			      <li class="day today">
+						<label class="flightDay">25</label> <label class="flightDayName">Sunday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 8:00</label></li>
+						   <li class=""><label>8:00 - 10:00</label></li>
+						   <li class="reserved"><label>10:00 - 12:00</label></li>
+						   <li class=""><label>12:00 - 14:00</label></li>
+						   <li class="reserved"><label>14:00 - 16:00</label></li>
+						   <li class="reserved"><label>16:00 - 18:00</label></li>
+						   <li class=""><label>18:00 - 20:00</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">26</label> <label class="flightDayName">Monday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 8:00</label></li>
+						   <li class=""><label>8:00 - 10:00</label></li>
+						   <li class=""><label>10:00 - 12:00</label></li>
+						   <li class=""><label>12:00 - 14:00</label></li>
+						   <li class="reserved"><label>14:00 - 16:00</label></li>
+						   <li class="reserved"><label>16:00 - 18:00</label></li>
+						   <li class="reserved"><label>18:00 - 20:00</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">27</label> <label class="flightDayName">Tuesday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 8:00</label></li>
+						   <li class="reserved"><label>8:00 - 10:00</label></li>
+						   <li class="reserved"><label>10:00 - 12:00</label></li>
+						   <li class="reserved"><label>12:00 - 14:00</label></li>
+						   <li class="reserved"><label>14:00 - 16:00</label></li>
+						   <li class="reserved"><label>16:00 - 18:00</label></li>
+						   <li class=""><label>18:00 - 20:00</label></li>
+				      </ol>
+			      </li> 
+			      <li class="day">
+						<label class="flightDay">28</label> <label class="flightDayName">Wednesday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 8:00</label></li>
+						   <li class=""><label>8:00 - 10:00</label></li>
+						   <li class="reserved"><label>10:00 - 12:00</label></li>
+						   <li class=""><label>12:00 - 14:00</label></li>
+						   <li class="reserved"><label>14:00 - 16:00</label></li>
+						   <li class="reserved"><label>16:00 - 18:00</label></li>
+						   <li class=""><label>18:00 - 20:00</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">29</label> <label class="flightDayName">Thursday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 8:00</label></li>
+						   <li class=""><label>8:00 - 10:00</label></li>
+						   <li class="reserved"><label>10:00 - 12:00</label></li>
+						   <li class=""><label>12:00 - 14:00</label></li>
+						   <li class="reserved"><label>14:00 - 16:00</label></li>
+						   <li class="reserved"><label>16:00 - 18:00</label></li>
+						   <li class=""><label>18:00 - 20:00</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">30</label> <label class="flightDayName">Friday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 8:00</label></li>
+						   <li class=""><label>8:00 - 10:00</label></li>
+						   <li class=""><label>10:00 - 12:00</label></li>
+						   <li class=""><label>12:00 - 14:00</label></li>
+						   <li class="reserved"><label>14:00 - 16:00</label></li>
+						   <li class="reserved"><label>16:00 - 18:00</label></li>
+						   <li class=""><label>18:00 - 20:00</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">31</label> <label class="flightDayName">Saturday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 8:00</label></li>
+						   <li class=""><label>8:00 - 10:00</label></li>
+						   <li class="reserved"><label>10:00 - 12:00</label></li>
+						   <li class="unavailable"><label>12:00 - 14:00</label></li>
+						   <li class="unavailable"><label>14:00 - 16:00</label></li>
+						   <li class=""><label>16:00 - 18:00</label></li>
+						   <li class=""><label>18:00 - 20:00</label></li>
+				      </ol>
+			      </li>
+		      </ol>
+
+      		<!--Week Content for Airplanes-->
+		      <ol id="cal-airplanes" class="calendar week clearfix" start="25"> 
+			      <li class="day today">
+						<label class="flightDay">25</label> <label class="flightDayName">Sunday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 7:00</label></li>
+						   <li class=""><label>7:15 - 8:15</label></li>
+						   <li class="reserved"><label>8:30 - 9:30</label></li>
+						   <li class="unavailable"><label>9:45 - 10:45</label></li>
+						   <li class="unavailable"><label>11:00 - 12:00</label></li>
+						   <li class=""><label>12:15 - 13:15</label></li>
+						   <li class=""><label>13:30 - 14:30</label></li>
+						   <li class=""><label>14:45 - 15:45</label></li>
+						   <li class=""><label>16:00 - 17:00</label></li>
+						   <li class=""><label>17:15 - 18:15</label></li>
+						   <li class="reserved"><label>18:30 - 19:30</label></li>
+						   <li class=""><label>19:45 - 20:45</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">26</label> <label class="flightDayName">Monday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 7:00</label></li>
+						   <li class=""><label>7:15 - 8:15</label></li>
+						   <li class="reserved"><label>8:30 - 9:30</label></li>
+						   <li class="unavailable"><label>9:45 - 10:45</label></li>
+						   <li class="unavailable"><label>11:00 - 12:00</label></li>
+						   <li class=""><label>12:15 - 13:15</label></li>
+						   <li class=""><label>13:30 - 14:30</label></li>
+						   <li class=""><label>14:45 - 15:45</label></li>
+						   <li class=""><label>16:00 - 17:00</label></li>
+						   <li class=""><label>17:15 - 18:15</label></li>
+						   <li class="reserved"><label>18:30 - 19:30</label></li>
+						   <li class=""><label>19:45 - 20:45</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">27</label> <label class="flightDayName">Tuesday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 7:00</label></li>
+						   <li class=""><label>7:15 - 8:15</label></li>
+						   <li class="reserved"><label>8:30 - 9:30</label></li>
+						   <li class="unavailable"><label>9:45 - 10:45</label></li>
+						   <li class="unavailable"><label>11:00 - 12:00</label></li>
+						   <li class=""><label>12:15 - 13:15</label></li>
+						   <li class=""><label>13:30 - 14:30</label></li>
+						   <li class=""><label>14:45 - 15:45</label></li>
+						   <li class=""><label>16:00 - 17:00</label></li>
+						   <li class=""><label>17:15 - 18:15</label></li>
+						   <li class="reserved"><label>18:30 - 19:30</label></li>
+						   <li class=""><label>19:45 - 20:45</label></li>
+				      </ol>
+			      </li> 
+			      <li class="day">
+						<label class="flightDay">28</label> <label class="flightDayName">Wednesday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 7:00</label></li>
+						   <li class=""><label>7:15 - 8:15</label></li>
+						   <li class="reserved"><label>8:30 - 9:30</label></li>
+						   <li class="unavailable"><label>9:45 - 10:45</label></li>
+						   <li class="unavailable"><label>11:00 - 12:00</label></li>
+						   <li class=""><label>12:15 - 13:15</label></li>
+						   <li class=""><label>13:30 - 14:30</label></li>
+						   <li class=""><label>14:45 - 15:45</label></li>
+						   <li class=""><label>16:00 - 17:00</label></li>
+						   <li class=""><label>17:15 - 18:15</label></li>
+						   <li class="reserved"><label>18:30 - 19:30</label></li>
+						   <li class=""><label>19:45 - 20:45</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">29</label> <label class="flightDayName">Thursday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 7:00</label></li>
+						   <li class=""><label>7:15 - 8:15</label></li>
+						   <li class="reserved"><label>8:30 - 9:30</label></li>
+						   <li class="unavailable"><label>9:45 - 10:45</label></li>
+						   <li class="unavailable"><label>11:00 - 12:00</label></li>
+						   <li class=""><label>12:15 - 13:15</label></li>
+						   <li class=""><label>13:30 - 14:30</label></li>
+						   <li class=""><label>14:45 - 15:45</label></li>
+						   <li class=""><label>16:00 - 17:00</label></li>
+						   <li class=""><label>17:15 - 18:15</label></li>
+						   <li class="reserved"><label>18:30 - 19:30</label></li>
+						   <li class=""><label>19:45 - 20:45</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">30</label> <label class="flightDayName">Friday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 7:00</label></li>
+						   <li class=""><label>7:15 - 8:15</label></li>
+						   <li class="reserved"><label>8:30 - 9:30</label></li>
+						   <li class="unavailable"><label>9:45 - 10:45</label></li>
+						   <li class="unavailable"><label>11:00 - 12:00</label></li>
+						   <li class=""><label>12:15 - 13:15</label></li>
+						   <li class=""><label>13:30 - 14:30</label></li>
+						   <li class=""><label>14:45 - 15:45</label></li>
+						   <li class=""><label>16:00 - 17:00</label></li>
+						   <li class=""><label>17:15 - 18:15</label></li>
+						   <li class="reserved"><label>18:30 - 19:30</label></li>
+						   <li class=""><label>19:45 - 20:45</label></li>
+				      </ol>
+			      </li>
+			      <li class="day">
+						<label class="flightDay">31</label> <label class="flightDayName">Saturday</label>
+				      <ol class="hours">
+						   <li class="unavailable"><label>6:00 - 7:00</label></li>
+						   <li class=""><label>7:15 - 8:15</label></li>
+						   <li class="reserved"><label>8:30 - 9:30</label></li>
+						   <li class="unavailable"><label>9:45 - 10:45</label></li>
+						   <li class="unavailable"><label>11:00 - 12:00</label></li>
+						   <li class=""><label>12:15 - 13:15</label></li>
+						   <li class=""><label>13:30 - 14:30</label></li>
+						   <li class=""><label>14:45 - 15:45</label></li>
+						   <li class=""><label>16:00 - 17:00</label></li>
+						   <li class=""><label>17:15 - 18:15</label></li>
+						   <li class="reserved"><label>18:30 - 19:30</label></li>
+						   <li class=""><label>19:45 - 20:45</label></li>
+				      </ol>
+			      </li>
+		      </ol>
+      	</article>
+
+			<article id="dashboardView" class="layoutView">
+				<!--Dashboard Content-->
+				<div id="dashboardView_content">
+					<h1>Welcome back <label id="dashboardView_username">Hooker Juggernaut</label></h1>
+					<section id="noReservations"><p>It seems like you don't have any reservations pending, 
+							would you like to <a href="#weekView">Make Reservation</a> now?</p>
+					</section>
+					<section id="dashboard_updates"><p>Looks like you've got some flying to do, your upcoming
+							flights are displayed bellow.  You can cancel your reservation no later than 24 hours
+							before scheduled flight, after that ... Sorry!</p>
+						<p>To see all of your reservations, select <a href="#reservationsView">View Reservations</a> option from the right 
+							sidebar.
+							To make another reservation click <a href="#weekView">Here</a>.</p>
+
+						<div id="dashboard_messages">
+
+							<aside class="upcomingFlight confirmed">
+								<header class="clear">
+									<div class="fr"><label class="flightId">#110</label></div>
+									<div class="fl"><button class="button button-red button-cancel"><span>Cancel</span></button></div>
+								</header>
+								<section>
+									<label class="flightDay">01/06/11</label>
+									<label class="flightTime">06:00 - 08:00</label><br/>
+									<label class="flightStatus confirmed">Confirmed</label><br/>
+									<label class="flightTail icon ico-helicopter">R44</label>
+								</section>
+							</aside>
+
+						</div>
+					</section>
+				</div>
+			</article>
+
+        <article id="reservationsView" class="layoutView">
+      		<!--Reservations Content-->
+				<aside class="upcomingFlight confirmed">
+					<header class="clear">
+						<div class="fr"><label class="flightId">#110</label></div>
+						<div class="fl"><button class="button button-red button-cancel"><span>Cancel</span></button></div>
+					</header>
+					<section>
+						<label class="flightDay">01/06/11</label>
+						<label class="flightTime">06:00 - 08:00</label><br/>
+						<label class="flightStatus confirmed">Confirmed</label><br/>
+						<label class="flightTail icon ico-helicopter">R44</label>
+					</section>
+				</aside>
+
+				<aside class="upcomingFlight pending">
+					<header class="clear">
+						<div class="fr"><label class="flightId">#113</label></div>
+						<div class="fl"><button class="button button-red button-cancel" type="submit">Cancel</button></div>
+					</header>
+					<section>
+						<label class="flightDay">01/09/11</label>
+						<label class="flightTime">16:00 - 18:00</label><br/>
+						<label class="flightStatus pending">Pending</label><br/>
+						<label class="flightTail icon ico-helicopter">R66</label>
+					</section>
+				</aside>
+
+				<aside class="upcomingFlight pending">
+					<header class="clear">
+						<div class="fr"><label class="flightId">#114</label></div>
+						<div class="fl"><button class="button button-red button-cancel" type="submit">Cancel</button></div>
+					</header>
+					<section>
+						<label class="flightDay">01/19/11</label>
+						<label class="flightTime">08:00 - 10:00</label><br/>
+						<label class="flightStatus pending">Pending</label><br/>
+						<label class="flightTail icon ico-helicopter">R22</label>
+						<div class="message warning"> 
+						  <h3>Warning!</h3> 
+						  <p> 
+								Not sure if it's possible, all depends on weather conditions. Watch for updates.
+						  </p> 
+						</div>
+					</section>
+				</aside>
+
+				<aside class="upcomingFlight canceled">
+					<header class="clear">
+						<div class="fr"><label class="flightId">#123</label></div>
+						<div class="fl"><button class="button button-red button-cancel" type="submit">Cancel</button></div>
+					</header>
+					<section>
+						<label class="flightDay">02/16/11</label>
+						<label class="flightTime">18:00 - 20:00</label><br/>
+						<label class="flightStatus canceled">Canceled</label><br/>
+						<label class="flightTail icon ico-helicopter">R66</label>
+						<div class="message error"> 
+						  <h3>Error!</h3> 
+						  <p> 
+								This flight was canceled by DGAC, therefore cannot be completed.
+						  </p> 
+						</div>
+					</section>
+				</aside>
+        </article>
+
+        <article id="adminView" class="layoutView">
+      		<!--Administration Content-->
+				<table id="admin_reservations" class="">
+				  <thead>
+						<tr>
+							 <th class="">Flight#</th>
+							 <th class="">Date</th>
+							 <th class="">Time</th>
+							 <th class="">Aircraft</th>
+							 <th class="">Name</th>
+							 <th class="">Client#</th>
+							 <th class="">&nbsp;</th>
+						</tr>
+				  </thead>
+				  <tbody>
+						<tr class="pending">
+							 <td class="ac">110</td>
+							 <td class="ac">01/06/11</td>
+							 <td class="ac">06:30AM</td>
+							 <td class="ac">R44</td>
+							 <td class="ac"><a href="#profileView">Hooker Juggernaut</a></td>
+							 <td class="ac"><a href="#profileView">secretgspot</a></td>
+							 <td class="ac">
+								<select>
+								<option>Confirmed</option>
+								<option selected>Pending</option>
+								<option>Canceled</option>
+								</select>
+								<textarea placeholder="Enter Message"></textarea>
+							 </td>
+						</tr>
+						<tr class="confirmed">
+							 <td class="ac">113</td>
+							 <td class="ac">01/09/11</td>
+							 <td class="ac">08:30AM</td>
+							 <td class="ac">R66</td>
+							 <td class="ac"><a href="#profileView">Hooker Juggernaut</a></td>
+							 <td class="ac"><a href="#profileView">secretgspot</a></td>
+							 <td class="ac">
+								<select>
+								<option selected>Confirmed</option>
+								<option>Pending</option>
+								<option>Canceled</option>
+								</select>
+								<textarea placeholder="Enter Message"></textarea>
+							 </td>
+						</tr>
+						<tr class="canceled">
+							 <td class="ac">114</td>
+							 <td class="ac">01/09/11</td>
+							 <td class="ac">08:30AM</td>
+							 <td class="ac">R66</td>
+							 <td class="ac"><a href="#profileView">Hooker Juggernaut</a></td>
+							 <td class="ac"><a href="#profileView">secretgspot</a></td>
+							 <td class="ac">
+								<select>
+								<option>Confirmed</option>
+								<option>Pending</option>
+								<option selected>Canceled</option>
+								</select>
+								<textarea placeholder="Enter Message"></textarea>
+							 </td>
+						</tr>
+				  </tbody>
+				</table>
+        </article>
+
+        <article id="clientsView" class="layoutView">
+      		<!--Clients Administration Content-->
+				<table id="clients_table" class="">
+				  <thead>
+						<tr>
+							 <th class="">&nbsp;</th>
+							 <th class="">Name</th>
+							 <th class="">Client#</th>
+							 <th class="">Email</th>
+							 <th class="">Phone</th>
+							 <th class="">&nbsp;</th>
+						</tr>
+				  </thead>
+				  <tbody>
+						<tr class="">
+							 <td class="ac"><img src="images/clients/kuzya.jpg"/></td>
+							 <td class="ac"><a href="#profileView">Some new unapproved user</a></td>
+							 <td class="ac"><a href="#profileView">username</a></td>
+							 <td class="ac">email@gmail.com</td>
+							 <td class="ac">4342 2342</td>
+							 <td class="ac">
+								<select>
+								<option>New</option>
+								<option>Active</option>
+								<option>Suspended</option>
+								<option>Deleted</option>
+								</select>
+							 </td>
+						</tr>
+						<tr class="active">
+							 <td class="ac"><img src="images/clients/kuzya.jpg"/></td>
+							 <td class="ac"><a href="#profileView">Hooker Juggernaut</a></td>
+							 <td class="ac"><a href="#profileView">secretgspot</a></td>
+							 <td class="ac">secretgspot@gmail.com</td>
+							 <td class="ac">5555 4323</td>
+							 <td class="ac">
+								<select>
+								<option selected>Active</option>
+								<option>Suspended</option>
+								<option>Deleted</option>
+								</select>
+							 </td>
+						</tr>
+						<tr class="suspended">
+							 <td class="ac"><img src="images/clients/kuzya.jpg"/></td>
+							 <td class="ac"><a href="#profileView">Jose Sandoval</a></td>
+							 <td class="ac"><a href="#profileView">josesando</a></td>
+							 <td class="ac">josesandoval@gmail.com</td>
+							 <td class="ac">2231 3423</td>
+							 <td class="ac">
+								<select>
+								<option>Active</option>
+								<option selected>Suspended</option>
+								<option>Deleted</option>
+								</select>
+							 </td>
+						</tr>
+						<tr class="deleted">
+							 <td class="ac"><img src="images/clients/kuzya.jpg"/></td>
+							 <td class="ac"><a href="#profileView">Adam Swafford</a></td>
+							 <td class="ac"><a href="#profileView">adam</a></td>
+							 <td class="ac">adam@gmail.com</td>
+							 <td class="ac">5235 4323</td>
+							 <td class="ac">
+								<select>
+								<option>Active</option>
+								<option>Suspended</option>
+								<option selected>Deleted</option>
+								</select>
+							 </td>
+						</tr>
+				  </tbody>
+				</table>
+        </article>
+
+        <article id="statisticsView" class="layoutView">
+      		<!--Statistics Content-->
+				<fieldset id="statsView_reservations">
+					<legend>Helicopter Reservations</legend>
+					<ul class="isotope">
+						 <li class="isotope-item">
+							  <a class="button-green" href="#adminView">
+									<strong>9</strong>
+									<span>Reservations</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-orange" href="#adminView">
+									<strong>10</strong>
+									<span>Awaiting</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-red" href="#adminView">
+									<strong>3</strong>
+									<span>Cancelations</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-grey" href="#adminView">
+									<strong>42</strong>
+									<span>Available</span>
+							  </a>
+						 </li>
+					</ul>
+
+					<legend>Airplane Reservations</legend>
+					<ul class="isotope">
+						 <li class="isotope-item">
+							  <a class="button-green" href="#adminView">
+									<strong>12</strong>
+									<span>Reservations</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-orange" href="#adminView">
+									<strong>22</strong>
+									<span>Awaiting</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-red" href="#adminView">
+									<strong>8</strong>
+									<span>Cancelations</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-grey" href="#adminView">
+									<strong>100</strong>
+									<span>Available</span>
+							  </a>
+						 </li>
+					</ul>
+				</fieldset>
+
+				<fieldset id="statsView_users">
+					<legend>Clients</legend>
+					<ul class="isotope">
+						 <li class="isotope-item">
+							  <a class="button-blue" href="#clientsView">
+									<strong>3</strong>
+									<span>New</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-orange" href="#clientsView">
+									<strong>4</strong>
+									<span>Suspended</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-grey" href="#clientsView">
+									<strong>12</strong>
+									<span>Active</span>
+							  </a>
+						 </li>
+						 <li class="isotope-item">
+							  <a class="button-red" href="#clientsView">
+									<strong>4</strong>
+									<span>Deleted</span>
+							  </a>
+						 </li>
+					</ul>
+				</fieldset>
+
+				<fieldset id="statsView_totals" style="display:none;">
+
+				</fieldset>
+
+        </article>
+
+      	<article id="profileView" class="layoutView">
+     		<!--Profile Content-->
+			<form id="form_profileView">
+          <div id="profileView_content">
+            <fieldset>
+                <!--<legend>Profile</legend>-->
+                <label>Status</label><select name="clientStatus"><option>Active</option><option>Suspended</option><option>Deleted</option></select>
+					<fieldset id="aircraftPreference" style="padding: 0;">
+					  <label for="hoa1" class="ckbWrapped"><input type="checkbox" name="typeAirplane" id="hoa1" /><span>Airplane</span></label>
+					  <label for="hoa2" class="ckbWrapped"><input type="checkbox" name="typeHelicopter" id="hoa2" /><span>Helicopter</span></label>
+					</fieldset>
+
+
+					 <label for="emailNotifications" class="ckbWrapped">
+						<input type="checkbox" name="emailNotifications" id="emailNotifications" />
+						<span>Receive email notifications reagarding reservations.</span>
+					 </label>
+
+                <label>Name</label><input type="text" name="name" required="required" placeholder="Enter your name">
+                <label>Client #</label><input type="text" name="client-id" required="required" maxlength="12" placeholder="Alphanumeric (max 12 char.)">
+                <label>Email</label><input type="email" name="email" required="required" placeholder="A valid email address" pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$">
+                <label>Birthdate</label><input type="date" class="date" id="ipt_bday" name="birthdate" placeholder="mm/dd/yyyy" required="required">
+                <label>Password</label><input type="password" name="password" maxlength="30" placeholder="max. 30 char." required="required">
+                <label>Phone</label><input type="tel" name="phone" maxlength="30" placeholder="Enter contact number" pattern="^[0-9]+[\- ]*[0-9]+$" required="required">
+
+					<label>Personal Photo</label>
+					<div id="dnd_area">Drop a photograph in here!</div>
+					<div id="cur_photo">
+						<figure>
+						  <img src="images/clients/kuzyaB.jpg" alt="Hooker Juggernaut">
+						  <figcaption>Current</figcaption>
+						</figure>
+					</div>
+				    <p id="dnd_status" class="message error">Browser not supported!</p>
+            </fieldset>
+          </div>
+          <footer id="profileView_footer" class="clearfix">
+              <nav class="left">
+                <!-- profileView_footer nav left -->
+                <button class="button button-green" type="submit">OK</button>
+              </nav>
+              <nav class="center">
+                <!-- profileView_footer nav center -->
+              </nav>
+              <nav class="right">
+                <!-- profileView_footer nav right -->
+                <button class="button button-red" type="reset">Reset</button>
+              </nav>
+          </footer>
+			</form>
+      	</article>
+
+      	<article id="notificationsView" class="layoutView">
+      		<!--Notifications Content-->
+
+				<!-- These to be used as template for 
+					  injectable messages.
+
+          <div class="message info"> 
+            <h3>Information</h3> 
+            <p> 
+                This is an info message.
+            </p> 
+          </div> 
+          <div class="message success"> 
+            <h3>Success!</h3> 
+            <p> 
+                This is a success message.
+            </p> 
+          </div> 
+          <div class="message warning"> 
+            <h3>Warning!</h3> 
+            <p> 
+                This is a warning message.
+            </p> 
+          </div> 
+          <div class="message error"> 
+            <h3>Error!</h3> 
+            <p> 
+                This is an error message.
+            </p> 
+          </div> 
+
+				end of template -->
+
+          <div class="message info closeable">
+	          <span class="message-close icon ico-close" title="Delete"></span>
+	          <div> 
+		           <p>
+			            <span class="icon ico-info"></span>
+			            <strong>Hey!</strong>
+				          Whatever Updates or news.
+		           </p>
+	          </div>
+          </div>
+
+          <div class="message success closeable">
+	          <span class="message-close icon ico-close" title="Delete"></span>
+	          <div> 
+		           <p>
+			            <span class="icon ico-success"></span>
+			            <strong>SUCCESS!</strong>
+				          Your reservation has been finalized.  You will receive an email with confirmation shortly.
+		           </p>
+	          </div>
+          </div>
+
+          <div class="message warning closeable">
+	          <span class="message-close icon ico-close" title="Delete"></span>
+	          <div> 
+		           <p>
+			            <span class="icon ico-error"></span> 
+			            <strong>Warning:</strong>
+				          This is a warning message that can be deleted. 
+		           </p>
+	          </div>
+          </div>
+
+          <div class="message error closeable">
+	          <span class="message-close icon ico-close" title="Delete"></span>
+	          <div> 
+		           <p>
+			            <span class="icon ico-error"></span> 
+			            <strong>Alert:</strong>
+				          We're sorry, but due to outstanding bill, your reservation priveleges have been suspended.
+				          Please contact our offices to resolve this issue at 2232-1248
+		           </p>
+	          </div>
+          </div>
+      	</article>
+
+      </section>
+    </div>
+    
+    <div id="sidebar" class="clearfix">
+	    <header>
+		    <div class="profileside"> 
+			    <a href="#profileView"><img src="images/clients/kuzya.jpg" height="50" width="50"> 
+			      <div class="user_names"> 
+				      <span class="user_displayName">Hooker Juggernaut</span> <span class="user_username">secretgspot</span> 
+			      </div> 
+			      <div class="clearfix noHeight"></div> 
+        		</a> 
+		    </div>
+	    </header>
+	    <nav id="sidebar_nav_options" class="sidebar_nav">
+			<ul class="clearfix">
+
+				<li class="list active">
+					<a href="#dashboardView" class="icon ico-dashboard">
+					<b>Dashboard</b>
+					</a>
+				</li>
+				<li class="list">
+					<a href="#weekView" class="icon ico-calendar">
+					<b>Make Reservation</b>
+					</a>
+				</li>
+				<li class="list clear">
+					<a href="#notificationsView" class="icon ico-notification">
+					<b>View Notifications</b>
+					</a>
+					<span class="fr">9</span>
+				</li>
+
+				<li class="list clear">
+					<a href="#reservationsView" class="icon ico-reservation">
+					<b>View Reservations</b>
+					</a>
+					<span class="fr">6</span>
+				</li>
+
+				<li class="list">
+					<a href="#statisticsView" class="icon ico-statistics">
+					<b>Statistics</b>
+					</a>
+				</li>
+			</ul>
+	    </nav>
+    </div>
+  </div>
+	<footer id="layout_footer" class="clearfix">
+		<!-- Footer -->
+    <nav class="left">
+      Nav left
+    </nav>
+    <nav class="right">
+      <!-- Nav right -->
+		<span>AENSA  2232-1248 | Reservations: 2232-0660</span>
+		<img id='imgLoader' src='images/loader.gif' height="20px" />
+    </nav>
+    <nav class="center">
+      <!--Nav center -->
+    </nav>
+	</footer>
+
+	<!-- Reservation Content Modal Screen -->
+	<div id="confirmModal" class="modal">
+	<form id="form_confirmModal">
+		<aside class="upcomingFlight">
+			<h3>Ready, Set..</h3> 
+			<p>You're about to make a reservation with the following details. Confirm?</p> 
+			<section>
+				<label class="flightMonth" name="flightMonth">June</label>
+				<label class="flightDay" name="flightDay">01</label><br/>
+				<label class="flightDayName" name="flightDayName">Wednesday</label>
+				<label class="flightTime" name="flightTime">06:00 - 8:00</label>
+				<label class="flightTail icon ico-helicopter" name="flightTail">R44</label>
+			</section>
+			<fieldset class="clear">
+				<button class="button button-green fr" type="submit"><span>Yeeess!</span></button>
+				<button class="button button-red closeModal fl"><span>Cancel</span></button>
+			</fieldset>
+		</aside>
+	</form>
+	</div>
+
+	<div id="cancelModal" class="modal">
+	<form id="form_cancelModal">
+		<aside class="upcomingFlight">
+			<h3>Hmmm.. </h3> 
+			<p>You sure you want to <strong>Cancel</strong> this flight?</p> 
+			<section>
+				<label class="flightMonth" name="flightMonth">June</label>
+				<label class="flightDay" name="flightDay">01</label><br/>
+				<label class="flightDayName" name="flightDayName">Wednesday</label>
+				<label class="flightTime" name="flightTime">06:00 - 8:00</label>
+				<label class="flightTail icon ico-helicopter" name="flightTail">R44</label>
+			</section>
+			<fieldset class="clear">
+				<button class="button button-green closeModal fl"><span>Nooo..</span></button>
+				<button class="button button-red fr" type="submit"><span>Cancel it!</span></button>
+			</fieldset>
+		</aside>
+	</form>
+	</div>
+
+	<script src="javascripts/h5scripts.js" type="text/javascript"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>JSONDB</title>
+	<link type="text/css" rel="stylesheet" href="stylesheets/screen.css" />
+</head>
+<body>
+	<h1>JSONDB.js Implementation</h1>
+	
+	<span id="new" checked="no" class="button">New Record</span>	
+	<span class="button"><input type='checkbox' checked="true" id='sync' /><label for="sync">Auto-Save It?</label></span>
+		
+	<table id="t">
+		<thead>
+			<tr>
+				<th scope="col">First Name</th>
+				<th scope="col">Last Name</th>
+				<th scope="col">City</th>
+				<th scope="col">Country</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+	
+	<div id="addFields">
+		<div class="col">
+			<p><label for="fname">First Name</label><input id="fname" name="fname" type="text" /></p>
+			<p><label for="lname">Last Name</label><input id="lname" name="lname" type="text" /></p>
+		</div>
+		<div class="col">
+			<p><label for="city">City</label><input id="city" name="city" type="text" /></p>
+			<p><label for="country">Country</label><input id="country" name="country" type="text" /></p>
+		</div>
+		<div style="clear:both"></div>
+		<span id="add" class="button">add</span>
+	</div>
+
+<script src="javascripts/jq161.js"></script>
+<script src="javascripts/json2.min.js"></script>
+<script src="javascripts/jsondb.js"></script>
+
+<script type="text/javascript">
+var business = JSONDB('business', true),
+	people = business.createTable('employees');
+
+function init() {
+	var	table  = $('#t tbody'),
+		rows   = people.readRecords(),
+		tRow, i, j;
+	
+	table.children().remove();
+	
+	for (i in rows) {
+		if (rows.hasOwnProperty(i)) {
+			tRow = $('<tr class="' + i + '" />');
+			for (j in rows[i]) {
+				if (rows[i].hasOwnProperty(j)) {
+					tRow.append($('<td class="' + j + '" />').text(rows[i][j]));
+				}
+			}
+			tRow.append('<td class="actions"><span class="button" id="delete">delete</span><span class="button" id="update">update</span></td>');
+			table.append(tRow);
+		}
+	}
+	
+	if (tRow && $('#download').length < 1) {
+		$('#addFields').after($('<a id="download" />').attr('href', 'databases/business.json').text('Download the JSON file'));
+	}
+}
+	
+	$('#new').click(function () {
+		$('#addFields').fadeIn();
+	});
+	
+	$('#add').click(function () {
+		var fname = $('#fname').val(),
+			lname = $('#lname').val(),
+			city = $('#city').val(),
+			country = $('#country').val();
+	
+	if (fname !== '' && lname !== '' && city !== '' && country !== '') {
+		people.createRecord( fname, {
+			fname : fname,
+			lname : lname,
+			city : city,
+			country : country
+		});
+		$('#addFields').fadeOut();
+		$('input[type=text]').val('');
+		init();
+	}
+	else {
+		if ($('#reminder').length < 1) {
+			$('#addFields').append('<p id="reminder"><strong>Please fill in all the fields.</strong></p>');
+		}
+	}
+		
+	});
+
+	$('#update').live('click', function () {
+		var $this = $(this),
+			text = $this.text(),
+			p = $this.parents('tr'),
+			fields = p.children(':not(.actions)'),
+			priKey = p.attr('class');
+			
+		if (text === 'update') {
+			$this.text('done');
+			fields.attr('contentEditable', 'true');
+		}
+		else {
+			$this.text('update');
+			fields.attr('contentEditable', 'false');
+			people.updateRecords(priKey, {
+				fname : p.children('.fname').text(),
+				lname : p.children('.lname').text(),
+				city : p.children('.city').text(),
+				country : p.children('.country').text()
+			});
+			init();
+		}
+	});
+
+	$('#delete').live('click', function () {
+		people.deleteRecords($(this).parents('tr').attr('class'));
+		init();
+	});
+	
+	
+	$('#sync').click(function () {
+		business.sync = $(this).attr('checked');
+	});
+
+	init();	
+</script>
+</body>
+</html>
